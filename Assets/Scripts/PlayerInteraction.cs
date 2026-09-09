@@ -1,25 +1,39 @@
 using UnityEngine;
+using UnityEngine.InputSystem; 
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public KeyCode interactKey = KeyCode.E; // Tecla para interactuar
+    // Le asignamos la tecla 'E' 
+    // Se puede modificar desde el Inspector de Unity
+    public InputAction interactAction = new InputAction(type: InputActionType.Button, binding: "<Keyboard>/e");
+
     private InteractableObject objectToInteract; // Guarda el item con el que podemos interactuar
+
+    // En el New Input System, las acciones deben habilitarse y deshabilitarse
+    private void OnEnable()
+    {
+        interactAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        interactAction.Disable();
+    }
 
     void Update()
     {
-        if (Input.GetKeyDown(interactKey) && objectToInteract != null)
+        if (interactAction.WasPressedThisFrame() && objectToInteract != null)
         {
             objectToInteract.Interact();
         }
     }
 
-    // Se activa automáticamente cuando el jugador choca con un "Trigger"
+    // collider de "Trigger"
     private void OnTriggerEnter(Collider other)
     {
         // el objeto tiene que tener el tag "Interactable" para poder interactuar con él
         if (other.CompareTag("Interactable"))
         {
-            // se guarda el objeto para poder interactuar con él
             objectToInteract = other.GetComponent<InteractableObject>();
         }
     }
