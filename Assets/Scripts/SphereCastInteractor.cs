@@ -5,42 +5,30 @@ public class SphereCastInteractor : MonoBehaviour
 {
     [Header("Interaction Settings")]
     public float interactRadius = 0.5f;
-    public float interactDistance = 3.0f;
+    public float interactDistance = 0f;
 
     // LayerMask para comprobar Tags para físicas
     public LayerMask interactableLayer;
 
-    [Header("Input Settings")]
-    public InputActionReference interactActionReference;
+    private PlayerInput playerInput;
 
-    void OnEnable()
+    private void Start()
     {
-        if (interactActionReference != null)
+        playerInput = GetComponent<PlayerInput>();
+
+        if (playerInput == null)
         {
-            interactActionReference.action.Enable();
-            interactActionReference.action.performed += OnInteractPerformed;
-            Debug.Log("SphereCastInteractor: Input Enabled.");
-        }
-        else
-        {
-            Debug.LogWarning("SphereCastInteractor: Input Action Reference is missing!");
+            Debug.LogError("No se encontró PlayerInput en el Player.");
         }
     }
 
-    void OnDisable()
+    private void Update()
     {
-        if (interactActionReference != null)
+        if (playerInput.actions["Interact"].WasPressedThisFrame())
         {
-            interactActionReference.action.performed -= OnInteractPerformed;
-            interactActionReference.action.Disable();
-            Debug.Log("SphereCastInteractor: Input Disabled.");
+            Debug.Log("E presionada");
+            TryInteract();
         }
-    }
-
-    private void OnInteractPerformed(InputAction.CallbackContext context)
-    {
-        Debug.Log("Interaction input detected. Searching for objects...");
-        TryInteract();
     }
 
     private void TryInteract()
