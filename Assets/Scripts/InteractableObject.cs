@@ -7,5 +7,17 @@ public class InteractableObject : MonoBehaviour
     {
         // si anda el scrip
         Debug.Log(" se interactua con el item.");
+
+       
+    {
+      
+        {
+           
+            Debug.Log("Objeto recogido: " + gameObject.name);
+
+            // Destruye el objeto del mapa
+            Destroy(gameObject);
+        }
     }
+}
 }

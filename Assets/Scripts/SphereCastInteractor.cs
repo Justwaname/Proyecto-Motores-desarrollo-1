@@ -25,7 +25,7 @@ public class SphereCastInteractor : MonoBehaviour
     private void Update()
     {
         if (playerInput.actions["Interact"].WasPressedThisFrame())
-        {
+        {   
             Debug.Log("E presionada");
             TryInteract();
         }
